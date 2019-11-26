@@ -1166,12 +1166,14 @@ def list_home(t):
     List home
     """
     owner, slug = get_slug()
-    res = t.lists.statuses(
-        slug=slug,
-        owner_screen_name=owner,
-        count=c['LIST_MAX'],
-        include_entities=False)
-    for tweet in reversed(res):
+    kwargs = {
+        'slug': slug,
+        'owner_screen_name': owner,
+        'count': c['LIST_MAX'],
+        'include_entities': False
+    }
+    kwargs = add_tweetmode_parameter(kwargs)
+    for tweet in reversed(t.lists.statuses(**kwargs)):
         draw(t=tweet)
     printNicely('')
 
